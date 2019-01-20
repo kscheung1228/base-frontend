@@ -1,0 +1,52 @@
+<p>
+  baseitems works!
+</p>
+<label for="imageUpload">Image Upload</label>
+<input type="file" (change)="fileEvent($event)" name="imageUpload" id="imageUpload"/>
+
+<div *ngIf="baseitem">
+  <h2>{{baseitem.name}}</h2>
+  
+  <!-- Does not need a master toggle button anymore
+  <button (click)="toggleDisabled()">
+      {{ isDisabled ? 'Enable editor' : 'Disable editor' }}
+  </button>-->
+  <ul class="steps">
+    <li *ngFor="let step of baseitems">
+      <a routerLink="/detail/{{step.id}}">
+        <span class="badge">{{step.order}}</span> {{step.description}}
+      </a>
+
+      <button mat-mini-fab (click)="save(step)" [disabled]="!stepRef.dirty">save</button>
+      <button mat-mini-fab class="confirmdelete" title="delete step"
+        (click)="confirmdelete(step)">x</button>
+    </li>
+  </ul>
+  <button mat-flat-button (click)="goBack()">go back</button>
+  
+  
+  <button mat-flat-button (click)="toggleAddNewStep()">
+      {{ isaddnewstep ? 'Not add new step' : 'Add New Step' }} 
+  </button>
+  <div class ="newstep" [hidden]="!isaddnewstep">
+  <h2> Add New Step </h2>
+    <label>Description:
+      <input #description />
+    </label>
+      <label>Content:
+    </label>
+      <label>hyperlink:
+      <input #hyperlink />
+    </label>
+      <label>order:
+      <input #order />
+    </label>
+    
+    <!-- (click) passes input value to add() and then clears the input -->
+    
+     <button mat-mini-fab (click)="add(description.value,hyperlink.value,model.editorData,order.value,baseitem.id); 
+     description.value='';order.value='';hyperlink.value='';content.value=''">
+      add
+    </button>
+  </div>
+  </div>
