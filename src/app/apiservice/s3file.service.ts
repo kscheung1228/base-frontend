@@ -7,6 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { MessageService } from './message.service';
 import { environment } from '../../environments/environment';
 import {S3File} from './s3File'
+import {S3Filepolicy} from './s3File'
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -71,12 +72,58 @@ export class S3fileService {
   //////// Save methods //////////
 
   /** POST: add a new step to the server */
-  addS3file (s3file: S3File): Observable<S3File> {
-    return this.http.post<S3File>(this.baseUrl, s3file, httpOptions).pipe(
+  addS3file (s3file: S3File, url: string, data:string): Observable<S3File> {
+    return this.http.post<S3File>(url, s3file, httpOptions).pipe(
       tap((s3file: S3File) => this.log(`added s3file w/ id=${s3file.id}`)),
       catchError(this.handleError<S3File>('adds3file'))
     );
   }
+
+  addS3filepolicy (s3filepolicy: S3Filepolicy): Observable<S3Filepolicy> {
+    return this.http.post<S3Filepolicy>(this.baseUrl+"upload/policy/", s3filepolicy, httpOptions).pipe(
+      tap((s3filepolicy: S3Filepolicy) => this.log(`added s3file w/ id=${s3filepolicy.id}`)),
+      catchError(this.handleError<S3Filepolicy>('adds3file'))
+    );
+  }
+
+  // addawsfile (s3file: S3File, url: string, data:string): Observable<S3File> {
+  //   return this.http.post<S3File>(url, s3file, httpOptions).pipe(
+  //     tap((s3file: S3File) => this.log(`added s3file w/ id=${s3file.id}`)),
+  //     catchError(this.handleError<S3File>('adds3file'))
+  //   );
+  // }
+
+
+
+
+
+
+
+  // key = 'cfe-tests/screen_shot.png'
+  // policy_url = f'http://127.0.0.1:8000/upload/policy/'
+  // post_data = None
+  // data={'name':'screen_shot.png','raw_filename':'screen_shot.png','filetype':'images/png'}
+  // r = requests.post(policy_url, json=data)
+  // if r.status_code in range(200, 299):
+  //     # print(r.json())
+  //     post_data = r.json()
+  //     print(post_data)
+  // print('policy', r.status_code)
+  
+  
+  
+  
+  
+  // # Direct to s3 via Python
+  // file_path = 'screen.png'
+  // with open(file_path, 'rb') as data:
+  //     files = {'file': data}
+  //     url = post_data['url']
+  //     request_data = post_data['fields']
+  
+  //     r = requests.post(url, data=request_data, files=files)
+  //     print(r.status_code) # range of 200 299, 204
+
 
   /** DELETE: delete the step from the server */
   deleteS3file (s3file: S3File | number): Observable<S3File> {
