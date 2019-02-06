@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk/global';
 import * as S3 from 'aws-sdk/clients/s3';
-import { Observable, of, Pr } from 'rxjs';
+import { Observable, of  } from 'rxjs';
+import { FileUpload } from '../file-upload';
+
  
 @Injectable()
 export class UploadFileService {
@@ -12,7 +14,7 @@ export class UploadFileService {
   constructor() { }
  
   
-  uploadfile(file, count):Pr {
+  uploadfile(file, count){
  
     const bucket = new S3(
       {
@@ -64,6 +66,48 @@ export class UploadFileService {
     // });
 
     
+  }
+
+
+
+  private getS3Bucket(): any {
+    const bucket = new S3(
+      {
+        accessKeyId: 'AKIAI3R3ENTXROWAVZVA',
+        secretAccessKey: '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',
+        region: 'us-west-2'
+      }
+    );
+ 
+    return bucket;
+  }
+
+  getFiles(): Observable<Array<FileUpload>> {
+    
+
+    const fileUploads = new Array<FileUpload>();
+ 
+    const params = {
+      Bucket: 'kscheung1228base',
+      Prefix: this.FOLDER
+    };
+ 
+    this.getS3Bucket().listObjects(params, function (err, data) {
+      if (err) {
+        console.log('There was an error getting your files: ' + err);
+        return;
+      }
+ 
+      console.log('Successfully get files.', data);
+ 
+      const fileDatas = data.Contents;
+ 
+      fileDatas.forEach(function (file) {
+        fileUploads.push(new FileUpload(file.Key, 'https://s3.amazonaws.com/' + params.Bucket + '/' + file.Key));
+      });
+    });
+ 
+    return of(fileUploads);
   }
  
 }
