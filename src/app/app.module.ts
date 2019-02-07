@@ -10,6 +10,18 @@ import { DetailsUploadComponent } from './details-upload/details-upload.componen
 import { DirectuploadComponent } from './directupload/directupload.component';
 import { FileUploadClientService } from './apiservice/file-client/file-client.service';
 
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatDialogModule,MatFormFieldModule,MatInputModule, } from "@angular/material";
+import {MatButtonModule} from '@angular/material/button';
+
+import { JwtInterceptor,  } from './jwtservice/jwt.interceptor';
+import { ErrorInterceptor } from './jwtservice/error.interceptor';
+import { ErrorDialogComponent } from './jwtservice/error-dialog/errordialog.component';
+import { ErrorDialogService } from './jwtservice/error-dialog/errordialog.service';
+import { HttpConfigInterceptor } from './jwtservice/httpconfig.interceptor';
+import { LoginComponent } from './jwtservice/login.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +29,8 @@ import { FileUploadClientService } from './apiservice/file-client/file-client.se
     Baseitems1Component,
     DetailsUploadComponent,
     DirectuploadComponent,
+    LoginComponent,
+    ErrorDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,8 +38,21 @@ import { FileUploadClientService } from './apiservice/file-client/file-client.se
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
   ],
-  providers: [FileUploadClientService],
-  bootstrap: [AppComponent]
+  providers: [
+    FileUploadClientService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+
+    ErrorDialogService,
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },  //to log out when 401
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorDialogComponent]
 })
 export class AppModule { }

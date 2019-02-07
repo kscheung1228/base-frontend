@@ -14,14 +14,14 @@
   <textarea id='fileDescription' name='fileDescription' formControlName='fileDescription'></textarea>
       
   <div *ngIf='f.fileDescription.invalid && (f.fileDescription.dirty || f.fileDescription.touched)'>
-      <div *ngIf='fileDescription.errors.required'>
+      <div *ngIf='f.fileDescription.errors.required'>
           Content is required.
       </div>
-      <div *ngIf='fileDescription.errors.maxlength'>
+      <div *ngIf='f.fileDescription.errors.maxlength'>
           Max length is 280
       </div>
-      <div *ngIf='fileDescription.errors.minlength'>
-          Min length is 4
+      <div *ngIf='f.fileDescription.errors.minlength'>
+          Min length is 2
       </div>
   </div>
 

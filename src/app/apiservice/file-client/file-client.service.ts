@@ -16,26 +16,44 @@ import { catchError, map, tap } from  'rxjs/operators';
 
 @Injectable()
 export class FileUploadClientService {
-    apiBaseURL = 'http://127.0.0.1:8000/api/'
+    apiBaseURL = 'http://127.0.0.1:8000/'
     constructor(private http: HttpClient){ }
 
     fileUpload(fileItem:File, extraData?:object):any{
-      let apiCreateEndpoint = `${this.apiBaseURL}files/create/`
+      let apiCreateEndpoint = `${this.apiBaseURL}upload/policy/`
       const formData: FormData = new FormData();
-     
       formData.append('fileItem', fileItem, fileItem.name);
       if (extraData) {
-        for(let key in extraData){
+        for(let key in fileItem){
             // iterate and set other form data
-          formData.append(key, extraData[key])
+          formData.append(key, fileItem[key])
         }
       }
-      
+      formData.append("name", fileItem.name)
+      formData.append("raw_filename", fileItem.name)
+      formData.append("filetype", fileItem.type)
+
       const req = new HttpRequest('POST', apiCreateEndpoint, formData, {
         reportProgress: true // for progress data
       });
+      
       return this.http.request(req)
     }
+
+    getpolicy(fileItem:File, extraData?:object):any{
+      let apiCreateEndpoint = `${this.apiBaseURL}upload/policy/`
+      const formData: FormData = new FormData();
+      formData.append("name", fileItem.name)
+      formData.append("raw_filename", fileItem.name)
+      formData.append("filetype", fileItem.type)
+
+      const req = new HttpRequest('POST', apiCreateEndpoint, formData, {
+        reportProgress: true // for progress data
+      });
+      
+      return this.http.request(req)
+    }
+   
    
   optionalFileUpload(fileItem?:File, extraData?:object):any{
     //   let apiCreateEndpoint = `${this.baseUrl}files/create/`

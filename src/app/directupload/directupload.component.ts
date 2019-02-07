@@ -45,7 +45,7 @@ export class DirectuploadComponent implements OnInit, OnDestroy {
   // })
 
   this.statusCreateForm = this.formBuilder.group({
-    fileDescription: ['', [Validators.required, Validators.minLength(6)],Validators.maxLength(200)],
+    fileDescription: ['', [Validators.required, Validators.minLength(2),Validators.maxLength(200)]],
   });
 }
 
@@ -78,15 +78,16 @@ export class DirectuploadComponent implements OnInit, OnDestroy {
   handleSubmit(event:any, statusNgForm:NgForm, statusFormGroup:FormGroup){
     event.preventDefault()
     if (statusNgForm.submitted){
-        
+        this.fileUploadService.getpolicy;
         let submittedData = statusFormGroup.value
-
         this.fileUploadSub = this.fileUploadService.fileUpload(
               this.fileToUpload, 
-              submittedData).subscribe(
+            //   submittedData).subscribe(
+                this.fileToUpload).subscribe(
                   event=>this.handleProgress(event), 
                   error=>{
                       console.log("Server error")
+                      console.log(error)
                   });
 
         statusNgForm.resetForm({})
