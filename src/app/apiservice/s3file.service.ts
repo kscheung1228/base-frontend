@@ -17,7 +17,7 @@ const httpOptions = {
 export class S3fileService {
   apiEndpoint = environment.APIEndpoint;
   // private stepsUrl = 'api/steps';  // URL to web api
-  private baseUrl = this.apiEndpoint +'s3files/';  // URL to web api
+  private baseUrl = this.apiEndpoint +'';  // URL to web api
 
   // private baseUrl = 'https://jershingnotes.herokuapp.com/S3files/';  // URL to web api
 

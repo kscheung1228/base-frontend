@@ -28,20 +28,20 @@ export class BaseitemsComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
-  constructor(private baseitemservice: BaseitemsService, private s3fileService: S3fileService,private fb: FormBuilder ,private http: HttpClient,private uploadService: UploadFileService, private count:number) {
+  constructor(private baseitemservice: BaseitemsService, private s3fileService: S3fileService,private fb: FormBuilder ,private http: HttpClient,private uploadService: UploadFileService) {
     this.createForm();
    }
 
 
   ngOnInit() {
-    this.count = 0;
+    // this.count = 0;
     this.getBaseitems();
   }
 
   upload() {
     const file = this.selectedFiles.item(0);
     this.uploadService.uploadfile(file,count);
-    this.count =this.count+1;
+    // this.count =this.count+1;
   }
  
   selectFile(event) {

@@ -21,6 +21,7 @@ export class FileUploadClientService {
 
     fileUpload(fileItem:File, extraData?:object):any{
       let apiCreateEndpoint = `${this.apiBaseURL}upload/policy/`
+      // let apiCreateEndpoint = 'https://webhook.site/4f87b73d-9e8f-43d5-ba3e-fc3ddd83a5c6'
       const formData: FormData = new FormData();
       formData.append('fileItem', fileItem, fileItem.name);
       if (extraData) {
